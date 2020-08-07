@@ -11,23 +11,21 @@ const MongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
-const createError = require('http-errors');
 const passport = require('./config/passport');
+const createError = require('http-errors');
 
-require('dotenv').config({ path : 'variables.env'});
+require('dotenv').config({ path: 'variables.env' });
 
 const app = express();
 
-// validación de campos
-app.use(expressValidator());
-
 // habilitar body-parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(expressValidator());
 
 // habilitar handlebars como view
-app.engine('handlebars', 
+app.engine('handlebars',
     exphbs({
         defaultLayout: 'layout',
         helpers: require('./helpers/handlebars')
@@ -45,37 +43,34 @@ app.use(session({
     key: process.env.KEY,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection : mongoose.connection })
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
-// inicializar passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Alertas y flash messages
 app.use(flash());
-
-// Crear nuestro middleware
 app.use((req, res, next) => {
-    res.locals.mensajes = req.flash();
-    next();
+    res.locals.message = req.flash(),
+        next()
 });
 
 app.use('/', router());
 
-// 404 pagina no existente
 app.use((req, res, next) => {
-    next(createError(404, 'No Encontrado'));
-})
+    next(createError(404, 'No encontrado'));
+});
 
-// Administración de los errores
-app.use((error, req, res) => {
-    res.locals.mensaje = error.message;
+app.use((error, req, res, next) => {
+    res.locals.error = error.message;
     const status = error.status || 500;
     res.locals.status = status;
     res.status(status);
     res.render('error');
 });
 
-
+const port = process.env.PORT;
+const host = '0.0.0.0';
+// Deploy
+//app.listen(port, host)
 app.listen(process.env.PUERTO);

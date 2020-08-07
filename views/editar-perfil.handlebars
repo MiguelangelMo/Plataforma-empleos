@@ -1,24 +1,26 @@
 <main class="contenedor">
-    <form action="/editar-perfil" method="POST" class="default-form" enctype="multipart/form-data">
+    <form action="/editar-perfil" class="default-form" method="POST" enctype="multipart/form-data">
+        <h2>Mis Datos</h2>
         <div class="campo">
-            <label>Nombre</label>
-            <input value={{usuario.nombre}} type="text" name="nombre" placeholder="Tu Nombre">
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" value="{{auth.nombre}}" placeholder="Ingresa tu Nombre"
+                required>
         </div>
         <div class="campo">
-            <label>E-mail</label>
-            <input value={{usuario.email}} type="email" name="email" placeholder="Tu E-mail">
+            <label for="email">E-Mail:</label>
+            <input type="email" name="email" id="email" value="{{auth.email}}" placeholder="Ingresa tu E-Mail" required>
         </div>
         <div class="campo">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Tu Password">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="¿Quieres cambiar tu contraseña?">
         </div>
         <div class="campo">
-            <label>Imagen</label>
-            <input type="file" name="imagen" placeholder="Tu imagen de perfil">
-            <img src="uploads/perfiles/{{usuario.imagen}}" class="admin-perfil">
+            <label for="imagen">Imagen</label>
+            <input type="file" name="imagen" id="imagen" placeholder="Foto de Perfíl"/>
+            <img src="/uploads/perfiles/{{auth.imagen}}" alt="perfil" class="admin-perfil" />
         </div>
         <div class="campo">
-            <input type="submit" class="btn btn-azul" value="Guardar Cambios">
+            <input type="submit" value="Guardar Cambios" class="btn btn-azul">
         </div>
     </form>
 </main>

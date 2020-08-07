@@ -69,7 +69,6 @@ const limpiarAlertas = () => {
 // Eliminar vacantes
 const accionesListado = e => {
     e.preventDefault();
-
     if(e.target.dataset.eliminar){
         // eliminar por axios
         Swal.fire({
@@ -86,9 +85,10 @@ const accionesListado = e => {
 
                 // enviar la petición con axios
                 const url = `${location.origin}/vacantes/eliminar/${e.target.dataset.eliminar}`;
-
+                const id = e.target.dataset.eliminar;
+                console.log(url)
                 // Axios para eliminar el registro
-                axios.delete(url, { params: {url} })
+                axios.delete(url, { params: {id} })
                     .then(function(respuesta) {
                         if(respuesta.status === 200) {
                             Swal.fire(

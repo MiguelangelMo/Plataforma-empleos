@@ -3,12 +3,12 @@ mongoose.Promise = global.Promise;
 const slug = require('slug');
 const shortid = require('shortid');
 
-const vacantesSchema =  new mongoose.Schema({
+const vacantesSchema = new mongoose.Schema({
     titulo: {
-        type: String, 
+        type: String,
         required: 'El nombre de la vacante es obligatorio',
-        trim : true
-    }, 
+        trim: true
+    },
     empresa: {
         type: String,
         trim: true
@@ -31,23 +31,23 @@ const vacantesSchema =  new mongoose.Schema({
         type: String,
         trim: true,
     },
-    url : {
+    url: {
         type: String,
-        lowercase:true
+        lowercase: true
     },
     skills: [String],
     candidatos: [{
         nombre: String,
         email: String,
-        cv : String
-    }], 
-    autor : {
-        type: mongoose.Schema.ObjectId, 
-        ref: 'Usuarios', 
+        cv: String
+    }],
+    autor: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Usuario',
         required: 'El autor es obligatorio'
     }
 });
-vacantesSchema.pre('save', function(next) {
+vacantesSchema.pre('save', function (next) {
 
     // crear la url
     const url = slug(this.titulo);
@@ -55,9 +55,6 @@ vacantesSchema.pre('save', function(next) {
 
     next();
 })
-
-// Crear un indice
-vacantesSchema.index({ titulo : 'text' });
-
+vacantesSchema.index({ titulo: 'text' });
 
 module.exports = mongoose.model('Vacante', vacantesSchema);
